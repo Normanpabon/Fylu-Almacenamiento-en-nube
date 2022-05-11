@@ -27,7 +27,22 @@ class UsuarioController {
         }
     }
 
+    def dirigirLogin(){
+        
+        render(view: "loginTest")
+    }
+
+    def dirigirRegistro(){
+        render(view:"registroTest") // esta bugueada esa madre
+    }
+
+    def dirigirPerfil(){
+        respond usuarioService.get()
+    }
+
     def loguearUsuario(){
+        
+        
 
         def tmpUser = usuarioService.get(params.id)
 
