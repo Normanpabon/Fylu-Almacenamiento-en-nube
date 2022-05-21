@@ -42,9 +42,10 @@ class UsuarioController {
 
     def loguearUsuario(){
         
+        //GORM querie
+        def tmpUser = Usuario.find("from Usuario as us where us.nombre_usuario?", [params.usuario])  
         
-
-        def tmpUser = usuarioService.get(params.id)
+        //def tmpUser = usuarioService.get(params.id)
 
         if(tmpUser != null){
             
