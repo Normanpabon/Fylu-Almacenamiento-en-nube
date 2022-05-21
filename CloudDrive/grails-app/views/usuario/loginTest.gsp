@@ -6,23 +6,45 @@
    
     <%="Pantalla login usuario" %>
    
-    <%-- la accion dirigirPerfil, lleva a una vista inexistente --%>
-    <g:form name="Login" url="[controller:'usuario',action:'loguearUsuario']">
-      
-      <p>Usuario</p>
-      <g:textField name="usuario" value="${myValue}" />
-      <p>Contraseña</p>
-      <g:passwordField name="pass" value="${myPassword}" />
+    <div class = "l-form" id="login">
+    <div class="shape1"></div>
+            <div class="shape2"></div>
 
-      
-      <p></p>
-      <g:actionSubmit value="Iniciar sesion" action="post" />
+            <div class="form">
+               <asset:image src="authentication.svg" alt="Inicia sesion" class="formimg"/>
 
+                <form class="formcontent" action="loguearUsuario" method="POST" id="loginForm" autocomplete="off">
+                    <h1 class="formtitle">Inicia sesión</h1>
+                    <div class= "formdescription">
+                        <p>No tienes una cuenta? <a href="#">Registrate</a></p>
+                     </div>
+                    <div class="formdiv formdiv-one">
+                        <div class="formicon">
+                            <i class='bx bx-user-circle'></i>
+                        </div>
 
+                        <div class="formdiv-input">
+                            <label for="" class="formlabel">Usuario</label>
+                            <input type="text" name="usuario" class="forminput" id="usuario" required>
+                        </div>
+                    </div>
 
-    
-    </g:form>
-   
+                    <div class="formdiv">
+                        <div class="formicon">
+                            <i class='bx bx-lock' ></i>
+                        </div>
+
+                        <div class="formdiv-input">
+                            <label for="" class="formlabel">Contraseña</label>
+                            <input type="password" name="hashed_pass" class="forminput" id="hashed_pass" required>
+                        </div>
+                    </div>
+                    <a href="#" class="formforgot">¿Olvidó su contraseña?</a>
+
+                    <input type="submit" id="submit" class="form__button" value="Iniciar sesión" />
+                </form>
+            </div>
+</div>
 
      
      <p>DEBUG INFORMATION</p>   

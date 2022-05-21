@@ -43,11 +43,12 @@ class UsuarioController {
     def loguearUsuario(){
         
         //GORM querie
-        def tmpUser = Usuario.find("from Usuario as us where us.nombre_usuario?", [params.usuario])  
-        
-        //def tmpUser = usuarioService.get(params.id)
 
+        def tmpUser = Usuario.findByNombre_usuario(params.usuario)
+       
         if(tmpUser != null){
+
+            render "Usuario encontrado, logueado correctamente. DEBUG params: " + params
             
             if(tmpUser.getHashed_pass() == params.hashed_pass.digest('SHA-256')){
                 //logueo exitoso
