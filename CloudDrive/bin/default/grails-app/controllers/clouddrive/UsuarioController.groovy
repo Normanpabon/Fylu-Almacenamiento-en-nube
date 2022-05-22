@@ -13,25 +13,53 @@ class UsuarioController {
 
     def registrarUsuario(){
 
-        //verificar cuando se implemente la vista, que si este hasheando el parametro correcto
+        
+
+        // aplica hash a la clave
         params.hashed_pass = params.hashed_pass.digest('SHA-256') 
-        def tmpUser = new Usuario(params)
+        def tmpUser = new Usuario(nombre_usuario: params.usuario, correo:params.correo, hashed_pass:params.hashed_pass, activo:1, cuota:5120)
+        //def tmpUser = new Usuario(params)
         if(tmpUser != null){
             try{
                 usuarioService.save(tmpUser)
+                // muestra msg temporal
+                flash.message = 'Usuario' + params.usuario +'creado correctamente!' 
+                render "usuario Creado correctamente" + "\n tmpUserData : " + tmpUser
+
                 //notificar al usuario creacion exitosa ¿Redirigir al perfil ? 
+
+                // todo : redirigir al perfil o archivos
             }catch(ValidationException e){
                 //notificar al usuario
-                return
+                render "error al crear usuario"
             }
         }
+
+        
+    }
+
+    def dirigirLogin(){
+        
+        render(view: "loginTest")
+    }
+
+    def dirigirRegistro(){
+        render(view:"registroTest") // esta bugueada esa madre
+    }
+
+    def dirigirPerfil(){
+        render "aca deberia ir el perfil del usuario dado"
     }
 
     def loguearUsuario(){
+        
+        //GORM querie
 
-        def tmpUser = usuarioService.get(params.id)
-
+        def tmpUser = Usuario.findByNombre_usuario(params.usuario)
+       
         if(tmpUser != null){
+
+            render "Usuario encontrado, logueado correctamente. DEBUG params: " + params
             
             if(tmpUser.getHashed_pass() == params.hashed_pass.digest('SHA-256')){
                 //logueo exitoso
@@ -123,10 +151,7 @@ class UsuarioController {
         respond usuarioService.get(id)
     }
 
-    def create() {
-        respond new Usuario(params)
-    }
-
+    
     def save(Usuario usuario) {
         if (usuario == null) {
             notFound()

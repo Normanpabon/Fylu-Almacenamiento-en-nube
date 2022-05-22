@@ -9,7 +9,7 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/index")
+        "/"(view:"/usuario/loginTest") //Vista renderizada por defecto
         "500"(view:'/error')
         "404"(view:'/notFound')
     }

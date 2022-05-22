@@ -58,11 +58,11 @@ class UsuarioController {
         def tmpUser = Usuario.findByNombre_usuario(params.usuario)
        
         if(tmpUser != null){
-
-            render "Usuario encontrado, logueado correctamente. DEBUG params: " + params
             
             if(tmpUser.getHashed_pass() == params.hashed_pass.digest('SHA-256')){
                 //logueo exitoso
+
+                render "Usuario encontrado, logueado correctamente. DEBUG params: " + params
                 setUsuarioActual(tmpUser.getId())
 
                 //redirigir a perfil
