@@ -15,16 +15,18 @@ class UsuarioController {
 
         
 
-        // aplica hash a la clave
+        // aplica sha-256 a la clave, se usa el nombre de usuario como salt
+        params.hashed_pass = params.hashed_pass+params.usuario
         params.hashed_pass = params.hashed_pass.digest('SHA-256') 
+        
         def tmpUser = new Usuario(nombre_usuario: params.usuario, correo:params.correo, hashed_pass:params.hashed_pass, activo:1, cuota:5120)
         //def tmpUser = new Usuario(params)
-        if(tmpUser != null){
+        if(tmpUser != null && Usuario.findByNombre_usuario(params.usuario) == null){
             try{
                 usuarioService.save(tmpUser)
                 // muestra msg temporal
                 flash.message = 'Usuario' + params.usuario +'creado correctamente!' 
-                render "usuario Creado correctamente" + "\n tmpUserData : " + tmpUser
+                redirect(action: "dirigirLogin")
 
                 //notificar al usuario creacion exitosa ¿Redirigir al perfil ? 
 
@@ -33,6 +35,9 @@ class UsuarioController {
                 //notificar al usuario
                 render "error al crear usuario"
             }
+        }else{
+            flash.error = ' ERROR el usuario ' + params.usuario +' ya esta registrado!'
+            redirect(action: "dirigirRegistro") 
         }
 
         
@@ -56,18 +61,27 @@ class UsuarioController {
         //GORM querie
 
         def tmpUser = Usuario.findByNombre_usuario(params.usuario)
+
+        // aplica sha-256 a la clave, se usa el nombre de usuario como salt
+        params.hashed_pass = params.hashed_pass+params.usuario
+        params.hashed_pass = params.hashed_pass.digest('SHA-256') 
        
         if(tmpUser != null){
 
-            render "Usuario encontrado, logueado correctamente. DEBUG params: " + params
             
-            if(tmpUser.getHashed_pass() == params.hashed_pass.digest('SHA-256')){
+            
+            if(tmpUser.getHashed_pass() == params.hashed_pass){
+                
                 //logueo exitoso
                 setUsuarioActual(tmpUser.getId())
+
+                render "Usuario encontrado, logueado correctamente. DEBUG params: " + params + "\nDEBUG SESSION: " + session
 
                 //redirigir a perfil
 
             }else{
+
+                render "algun error ha ocurrido, DEBUG : " + tmpUser
                 // mostrar usuario o contraseña incorrectos
             }
         }else{
