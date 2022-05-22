@@ -16,7 +16,7 @@
                         
                         <li><g:link class="create" action="dirigirLogin"><g:message code="Iniciar Sesion" args="[entityName]" /></g:link></li>
                         <li><g:link class="create" action="dirigirRegistro"><g:message code="Registrar Usuario" args="[entityName]" /></g:link></li>
-                        <li><g:link class="create" action="create"><g:message code="Crear usuario(admin)" args="[entityName]" /></g:link></li>
+                        
                         <li><g:link class="create" action="dirigirPerfil"><g:message code="Ver perfil" args="[entityName]" /></g:link></li>
                     </ul>
                 </div>

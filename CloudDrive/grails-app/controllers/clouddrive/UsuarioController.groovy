@@ -13,18 +13,29 @@ class UsuarioController {
 
     def registrarUsuario(){
 
-        //verificar cuando se implemente la vista, que si este hasheando el parametro correcto
+        
+
+        // aplica hash a la clave
         params.hashed_pass = params.hashed_pass.digest('SHA-256') 
-        def tmpUser = new Usuario(params)
+        def tmpUser = new Usuario(nombre_usuario: params.usuario, correo:params.correo, hashed_pass:params.hashed_pass, activo:1, cuota:5120)
+        //def tmpUser = new Usuario(params)
         if(tmpUser != null){
             try{
                 usuarioService.save(tmpUser)
+                // muestra msg temporal
+                flash.message = 'Usuario' + params.usuario +'creado correctamente!' 
+                render "usuario Creado correctamente" + "\n tmpUserData : " + tmpUser
+
                 //notificar al usuario creacion exitosa ¿Redirigir al perfil ? 
+
+                // todo : redirigir al perfil o archivos
             }catch(ValidationException e){
                 //notificar al usuario
-                return
+                render "error al crear usuario"
             }
         }
+
+        
     }
 
     def dirigirLogin(){
@@ -37,7 +48,7 @@ class UsuarioController {
     }
 
     def dirigirPerfil(){
-        respond usuarioService.get()
+        render "aca deberia ir el perfil del usuario dado"
     }
 
     def loguearUsuario(){
@@ -140,10 +151,7 @@ class UsuarioController {
         respond usuarioService.get(id)
     }
 
-    def create() {
-        respond new Usuario(params)
-    }
-
+    
     def save(Usuario usuario) {
         if (usuario == null) {
             notFound()
