@@ -10,6 +10,7 @@ class UsuarioController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    static defaultAction = "dirigirLogin"
 
     def registrarUsuario(){
 
