@@ -62,7 +62,7 @@
 
             <!--- ciclo para mostrar los archivos -->
             <g:each in="${params.myFileList}" var="file">
-             <li>${file.nombre}   ${file.size}MB</li>
+             <li>${file.nombre}</li>
             </g:each>
 
             <!-- subida de archivos  -->
