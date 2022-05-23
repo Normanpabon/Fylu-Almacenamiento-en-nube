@@ -142,8 +142,8 @@ class ArchivoController {
             // transfiere el archivo a la ubicacion dada
             archivo.transferTo(new File(tmpPath))
 
-            render " se ha creado y transferido correctamente \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session
-
+            //render " se ha creado y transferido correctamente \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session
+            render "has encontrado tu primer bug we"
             // todo : una vez finalizada la subida, recargar la vista
             
         }
@@ -184,7 +184,8 @@ class ArchivoController {
             }
         
         }else{
-            // todo: notificar que el archivo ya existe
+            // todo: notificar que el archivo ya existe (puede llegar aca sin que exista en la bd)
+            redirect(controller: "usuario", action: "dirigirHome")
         }
 
     }
