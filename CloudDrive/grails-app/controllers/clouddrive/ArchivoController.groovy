@@ -32,7 +32,7 @@ class ArchivoController {
         String tmpFileName = "archivo.txt"
         String tmpPath = pathToData+tmpUser+fileName
         if(archivo.empty){
-            render "Error el archivo esta vacio"
+            render "Error el archivo esta vacio \nDEBUG params : "+ params + " \n DEBUG request: " + request 
 
             //todo : aca manejar el error mostrando una ventana emergente o algo
 
@@ -43,6 +43,8 @@ class ArchivoController {
             
             // transfiere el archivo a la ubicacion dada
             archivo.transferTo(new File(tmpPath))
+
+            render " se ha creado y transferido correctamente \nDEBUG params : "+ params + " \n DEBUG request: " + request 
 
             // todo : una vez finalizada la subida, recargar la vista
             

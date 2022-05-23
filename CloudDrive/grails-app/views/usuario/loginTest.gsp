@@ -23,7 +23,7 @@
                 <form class="form__content" action="loguearUsuario" method="POST" id="loginForm" autocomplete="off">
                     <h1 class="form__title">Inicia sesión</h1>
                     <div class= "form__description">
-                        <p>No tienes una cuenta? <a href="dirigirRegistro">Registrate</a></p>
+                        <p>No tienes una cuenta? <a href="/usuario/dirigirRegistro">Registrate</a></p>
                      </div>
                     <div class="form__div form__div-one">
                         <div class="form__icon">

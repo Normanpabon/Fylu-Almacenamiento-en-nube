@@ -83,6 +83,9 @@ grails:
             maxsize: 1000
     controllers:
         defaultScope: singleton
+        upload:
+            maxFileSize: 2199023255552
+            maxRequestSize: 2199023255552
     converters:
         encoding: UTF-8
     views:
@@ -113,7 +116,7 @@ environments:
             driverClassName : "com.mysql.jdbc.Driver"
             dialect : org.hibernate.dialect.MySQL5Dialect
             username : "root"
-            password : ""
+            password : "Wikiti22"
             
     test:
         dataSource:
@@ -123,7 +126,7 @@ environments:
             driverClassName : "com.mysql.jdbc.Driver"
             dialect : org.hibernate.dialect.MySQL5Dialect
             username : "root"
-            password : ""
+            password : "Wikiti22"
     production:
         dataSource:
             pooled : true
@@ -132,4 +135,4 @@ environments:
             driverClassName : "com.mysql.jdbc.Driver"
             dialect : org.hibernate.dialect.MySQL5Dialect
             username : "root"
-            password : ""
+            password : "Wikiti22"

@@ -44,6 +44,10 @@ class UsuarioController {
         
     }
 
+    def dirigirHome(){
+        render(view: "home")
+    }
+
     def dirigirLogin(){
         
         render(view: "loginTest")
@@ -54,7 +58,7 @@ class UsuarioController {
     }
 
     def dirigirPerfil(){
-        render "aca deberia ir el perfil del usuario dado"
+        render(view:"perfil")
     }
 
     def loguearUsuario(){
@@ -76,7 +80,9 @@ class UsuarioController {
                 //logueo exitoso
                 setUsuarioActual(tmpUser.getId())
 
-                render "Usuario encontrado, logueado correctamente. DEBUG params: " + params + "\nDEBUG SESSION: " + session
+                //render "Usuario encontrado, logueado correctamente. DEBUG params: " + params + "\nDEBUG SESSION: " + session
+
+                redirect(action: "dirigirHome") 
 
                 //redirigir a perfil
 
@@ -98,7 +104,7 @@ class UsuarioController {
         def tmpUser = [uid: id]
         session["user"] = tmpUser
         //verificar funcionamiento
-        render "Añadido usuario $tmpUser a la session" // borrar
+        //render "Añadido usuario $tmpUser a la session" // borrar
 
     }
 
