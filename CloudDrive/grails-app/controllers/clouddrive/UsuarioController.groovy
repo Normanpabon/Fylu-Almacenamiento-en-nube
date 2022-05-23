@@ -101,8 +101,7 @@ class UsuarioController {
 
     def setUsuarioActual(int id){
         // colocar id del usuario o nombre de usuario en la cookie para autenticarlo
-        def tmpUser = [uid: id]
-        session["user"] = tmpUser
+        session["user"] = id
         //verificar funcionamiento
         //render "Añadido usuario $tmpUser a la session" // borrar
 

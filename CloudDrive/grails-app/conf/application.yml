@@ -116,7 +116,7 @@ environments:
             driverClassName : "com.mysql.jdbc.Driver"
             dialect : org.hibernate.dialect.MySQL5Dialect
             username : "root"
-            password : "Wikiti22"
+            password : ""
             
     test:
         dataSource:
@@ -126,7 +126,7 @@ environments:
             driverClassName : "com.mysql.jdbc.Driver"
             dialect : org.hibernate.dialect.MySQL5Dialect
             username : "root"
-            password : "Wikiti22"
+            password : ""
     production:
         dataSource:
             pooled : true
@@ -135,4 +135,4 @@ environments:
             driverClassName : "com.mysql.jdbc.Driver"
             dialect : org.hibernate.dialect.MySQL5Dialect
             username : "root"
-            password : "Wikiti22"
+            password : ""
