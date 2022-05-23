@@ -96,6 +96,42 @@
                 </form>
             </div>
             
+            <h2>/...../</h2>
+            <div class="form">
+
+                <form class="formcontent" action="deshabilitarCuenta" method="POST" id="edMailForm" autocomplete="off">
+					<h3 class="formtitle">Desactiva tu cuenta</h3>
+                    
+                    <div class="formdiv formdiv-one">
+                        <div class="formicon">
+                            <i class='bx bx-user-circle'></i>
+                        </div>
+
+                   
+                    </div>
+
+                    <div class="formdiv">
+                        <div class="formicon">
+                            <i class='bx bx-lock' ></i>
+                        </div>
+
+                        <div class="formdiv-input">
+                            <label for="" class="formlabel">Ingrese su clave</label>
+                            <input type="password" name="claveOld" class="forminput" id="claveOld" required>
+                        </div>
+                    </div>
+                     <div class="formdiv">
+                        <div class="formicon">
+                            <i class='bx bx-lock' ></i>
+                        </div>
+
+                       
+                    </div>
+                    
+
+                    <input type="submit" id="submit2" class="form__button" value="Darse de baja" />
+                </form>
+            </div>
             </center>
 </body>
 </html>

@@ -12,6 +12,41 @@ class UsuarioController {
 
     static defaultAction = "dirigirLogin"
 
+
+    def deshabilitarCuenta(){
+
+        verificarUsuarioLogueado()
+        
+        def tmpUser = Usuario.get(session.user)
+        
+        if(tmpUser != null ){
+
+            if(tmpUser.hashed_pass == (params.claveOld+tmpUser.nombre_usuario).digest('SHA-256') ){
+                tmpUser.activo = 0
+                try{
+                    usuarioService.save(tmpUser)
+                    flash.message = "Cuenta desactivada correctamente"
+                    redirect(action: "dirigirLogin")
+                }catch(ValidationException e){
+                    
+                }
+            }else{
+                
+                flash.message = "La clave es incorrecta"
+                redirect(action: "dirigirPerfil")
+            }
+        
+        
+        
+        }else{
+            
+            redirect(action: "dirigirLogin")
+        }
+
+
+        // logic : debe asignar el parametro de la cuenta dada como un 0 para que se encuentre deshabilitada
+    }
+
     def registrarUsuario(){
 
         
@@ -47,7 +82,7 @@ class UsuarioController {
     def modificarContra(){
         verificarUsuarioLogueado()
         
-        // encontrar usuario con id del cookie  ? si no esta logueado, la cookie con id de usuario no estaria inicializada
+        // encontrar usuario con id del cookie. si no esta logueado, la cookie con id de usuario no estaria inicializada
         def tmpUser = Usuario.get(session.user)
 
                 
@@ -106,6 +141,10 @@ class UsuarioController {
 
         if(tmpUser == null){
             redirect(action: "dirigirLogin")
+        }else{
+            if(tmpUser.activo == 0){
+                redirect(action: "dirigirLogin")
+            }
         }
 
     }
@@ -125,7 +164,7 @@ class UsuarioController {
 
             
             
-            if(tmpUser.getHashed_pass() == params.hashed_pass){
+            if(tmpUser.getHashed_pass() == params.hashed_pass && tmpUser.activo == 1){
                 
                 //logueo exitoso
                 setUsuarioActual(tmpUser.getId())
@@ -214,12 +253,7 @@ class UsuarioController {
         respond usuarioService.list(params), model:[usuarioCount: usuarioService.count()]
         
     }
-
-    def show(Long id) {
-        respond usuarioService.get(id)
-    }
-
-    
+  
     def save(Usuario usuario) {
         if (usuario == null) {
             notFound()
@@ -242,56 +276,5 @@ class UsuarioController {
         }
     }
 
-    def edit(Long id) {
-        respond usuarioService.get(id)
-    }
-
-    def update(Usuario usuario) {
-        if (usuario == null) {
-            notFound()
-            return
-        }
-
-        try {
-            usuarioService.save(usuario)
-        } catch (ValidationException e) {
-            respond usuario.errors, view:'edit'
-            return
-        }
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuario.id])
-                redirect usuario
-            }
-            '*'{ respond usuario, [status: OK] }
-        }
-    }
-
-    def delete(Long id) {
-        if (id == null) {
-            notFound()
-            return
-        }
-
-        usuarioService.delete(id)
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'usuario.label', default: 'Usuario'), id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'usuario.label', default: 'Usuario'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
+    
 }

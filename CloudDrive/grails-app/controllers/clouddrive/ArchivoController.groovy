@@ -13,10 +13,6 @@ class ArchivoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index() {
-        // listar los archivos del usuario logueado y meterlos en el params
-    }
-
 
     // se puede usar tambien para verificar si existe el directorio
     boolean existeArchivo(String path){
@@ -60,9 +56,18 @@ class ArchivoController {
     }
 
     def descargarArchivo(){
-
-        def é
-        // logica
+        // espera params.fileToDownloadId
+        def fileId = params.fileToDownloadId
+        def tmpFile = new File(pathToData+(archivoService.get(fileId)).file_path)
+        if(tmpFile.exists()){
+            //falta probar, en espera de la vista
+            response.setContentType("application/octet-stream")
+            response.setHeader("Content-disposition", "attachment;filename=\"${tmpFile.name}\"")
+            response.outputStream << tmpFile.bytes
+                
+        }else{
+            render "Error al descargar el archivo"
+        }
     }
         
     // anadir logica de sobrecarga para descargar multiples archivos
