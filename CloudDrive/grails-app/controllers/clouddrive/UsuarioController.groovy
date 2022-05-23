@@ -45,6 +45,7 @@ class UsuarioController {
     }
 
     def dirigirHome(){
+        verificarUsuarioLogueado()
         render(view: "home")
     }
 
@@ -58,7 +59,18 @@ class UsuarioController {
     }
 
     def dirigirPerfil(){
+        verificarUsuarioLogueado()
         render(view:"perfil")
+    }
+
+    def verificarUsuarioLogueado(){
+
+        def tmpUser = Usuario.get(session.user)
+
+        if(tmpUser == null){
+            redirect(action: "dirigirLogin")
+        }
+
     }
 
     def loguearUsuario(){
@@ -70,6 +82,7 @@ class UsuarioController {
         // aplica sha-256 a la clave, se usa el nombre de usuario como salt
         params.hashed_pass = params.hashed_pass+params.usuario
         params.hashed_pass = params.hashed_pass.digest('SHA-256') 
+       
        
         if(tmpUser != null){
 
@@ -112,41 +125,54 @@ class UsuarioController {
         // revocar cookie
 
         session.invalidate()
-        //redirect(action: "login")  //quitar comentario cuando se tenga la pagina del login
+        redirect(action: "dirigirLogin")  
 
     }
 
     def modContra(){
+
+        verificarUsuarioLogueado()
         //logic
         // encontrar usuario con id del cookie  ? si no esta logueado, la cookie con id de usuario no estaria inicializada
-        def tmpUser = usuarioService.get(session.user)
+        def tmpUser = Usuario.get(session.user)
         
         // se espera params.viejaContra y params.nuevaContra
         if(tmpUser != null){
-            if(tmpUser.getHashed_pass == params.viejaContra.digest('SHA-256')){
-                tmpUser.hashed_pass = params.viejaContra.digest('SHA-256')
-                tmpUser.save()
+            if(tmpUser.hashed_pass == params.viejaContra.digest('SHA-256')){
+                tmpUser.hashed_pass = params.nuevaContra.digest('SHA-256')
+                
+                usuarioService.save(tmpUser)
+                flash.message = "Contraseña cambiada correctamente"
+                redirect(action: "dirigirPerfil")
+
             }else{
+                flash.message = "La contraseña anterior es incorrecta"
+                redirect(action: "dirigirPerfil")
+
                 //todo notificar al usuario de error en la contraseña anterior
             }
         }else{
-            //redirect(action: "login")  //quitar comentario cuando se tenga la pagina del login
+            redirect(action: "dirigirLogin")
         }
         
     }
-
+    
     def modCorreo(){
+        verificarUsuarioLogueado()
         //logic
-        def tmpUser = usuarioService.get(session.user)
+        def tmpUser = Usuario.get(session.user)
         
         // se espera params.correoNuevo 
         
         if(tmpUser != null){
             tmpUser.correo = params.correoNuevo
-            tmpUser.save()
+            
+            usuarioService.save(tmpUser)
+            flash.message = "Correo cambiado correctamente"
+            redirect(action: "dirigirPerfil")
         
         }else{
-            //redirect(action: "login")  //quitar comentario cuando se tenga la pagina del login
+            redirect(action: "dirigirLogin")
         }
 
     }

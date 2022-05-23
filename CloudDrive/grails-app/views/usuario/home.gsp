@@ -8,9 +8,15 @@
     <br />
     <g:uploadForm controller="Archivo" action="subirArchivo">
         <input type="file" name="myFile" />
-        <input type="submit" />
+        <input type="Subir archivo" />
     </g:uploadForm>
 
+    <div>
+        <p>Boton de prueba</p>
+        <li><g:link class="create" action="dirigirPerfil"><g:message code="Dirigir a perfil" args="[entityName]" /></g:link></li>
+        <p> Boton cerrar session (prueba)
+        <li><g:link class="create" action="cerrarSesion"><g:message code="Cerrar session actual" args="[entityName]" /></g:link></li>
+    </div>
     </body>
 
 
