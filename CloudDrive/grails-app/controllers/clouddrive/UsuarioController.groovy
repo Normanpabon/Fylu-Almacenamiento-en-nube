@@ -44,6 +44,43 @@ class UsuarioController {
         
     }
 
+    def modificarContra(){
+        verificarUsuarioLogueado()
+        
+        // encontrar usuario con id del cookie  ? si no esta logueado, la cookie con id de usuario no estaria inicializada
+        def tmpUser = Usuario.get(session.user)
+
+                
+        // se espera params.viejaContra y params.nuevaContra
+        if(tmpUser != null ){
+
+
+            if(tmpUser.hashed_pass == (params.viejaContra+tmpUser.nombre_usuario).digest('SHA-256')){
+                
+                tmpUser.hashed_pass = (params.nuevaContra+tmpUser.nombre_usuario).digest('SHA-256')
+
+                try {
+                    usuarioService.save(tmpUser)
+                } catch (ValidationException e) {
+                    respond usuario.errors
+                    return
+                }
+                
+                flash.message = "Contraseña cambiada correctamente"
+                redirect(action: "dirigirPerfil")
+
+            }else{
+                flash.message = "La contraseña anterior es incorrecta"
+                redirect(action: "dirigirPerfil")
+
+                //todo notificar al usuario de error en la contraseña anterior
+            }
+        }else{
+            redirect(action: "dirigirLogin")
+        }
+        
+    }
+
     def dirigirHome(){
         verificarUsuarioLogueado()
         render(view: "home")
@@ -134,42 +171,7 @@ class UsuarioController {
 
     }
 
-    def modContra(){
 
-        verificarUsuarioLogueado()
-        //logic
-        // encontrar usuario con id del cookie  ? si no esta logueado, la cookie con id de usuario no estaria inicializada
-        def tmpUser = Usuario.get(session.user)
-        
-        // se espera params.viejaContra y params.nuevaContra
-        if(tmpUser != null){
-            if(tmpUser.hashed_pass == params.viejaContra.digest('SHA-256')){
-                
-                tmpUser.hashed_pass = params.nuevaContra.digest('SHA-256')
-
-                print("\nEBUG TmpUser data :" + tmpUser)
-                print("\nDEBUG viejaContra : " + params.viejaContra + "\t nuevaContra : " + params.nuevaContra)
-                try {
-                    usuarioService.save(tmpUser)
-                } catch (ValidationException e) {
-                    respond usuario.errors
-                    return
-                }
-                
-                flash.message = "Contraseña cambiada correctamente"
-                redirect(action: "dirigirPerfil")
-
-            }else{
-                flash.message = "La contraseña anterior es incorrecta"
-                redirect(action: "dirigirPerfil")
-
-                //todo notificar al usuario de error en la contraseña anterior
-            }
-        }else{
-            redirect(action: "dirigirLogin")
-        }
-        
-    }
     
     def modCorreo(){
         

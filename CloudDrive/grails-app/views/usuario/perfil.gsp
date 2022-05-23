@@ -21,7 +21,7 @@
             <div class="form">
                <asset:image src="perfil.svg" alt="Mi perfil" class="formimg"/>
 
-                <form class="formcontent" action="modContra" method="POST" id="edPassForm" autocomplete="off">
+                <form class="formcontent" action="modificarContra" method="POST" id="edPassForm" autocomplete="off">
 					<h3 class="formtitle">Modifica tu clave</h3>
                     
                     <div class="formdiv formdiv-one">
@@ -53,7 +53,7 @@
                     </div>
                     
 
-                    <input type="submit" id="submit" class="form__button" value="Cambiar clave" />
+                    <input type="submit" id="submit1" class="form__button" value="Cambiar clave" />
                 </form>
             </div>
             
@@ -61,7 +61,7 @@
             <div class="form">
                <asset:image src="perfil.svg" alt="Mi perfil" class="formimg"/>
 
-                <form class="formcontent" action="modCorreo" method="POST" id="edPassForm" autocomplete="off">
+                <form class="formcontent" action="modCorreo" method="POST" id="edMailForm" autocomplete="off">
 					<h3 class="formtitle">Modifica tu correo</h3>
                     
                     <div class="formdiv formdiv-one">
