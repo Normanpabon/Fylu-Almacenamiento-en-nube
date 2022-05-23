@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.*
 class UsuarioController {
 
     UsuarioService usuarioService
+    ArchivoController archivoController = new ArchivoController()
     
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -118,6 +119,7 @@ class UsuarioController {
 
     def dirigirHome(){
         verificarUsuarioLogueado()
+        archivoController.listarArchivos()
         render(view: "home")
     }
 

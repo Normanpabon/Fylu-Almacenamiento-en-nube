@@ -30,9 +30,13 @@ class ArchivoController {
      def listarArchivos(){
 
         def fileList = Archivo.findAllByUid_usr(Usuario.get(session.user))
-        return fileList
+
+        if(fileList != null){
+            params.myFileList = fileList
+        }
         
         
+       
     }
 
     def calcularEspacioUsado(){
@@ -46,6 +50,16 @@ class ArchivoController {
         
         return acum
         
+    }
+
+
+    def calcularEspacioDisponible(){
+
+        def espacioUsado = calcularEspacioUsado()
+        
+        return espacioUsado - (Usuario.get(session.user)).cuota
+
+        //render ("espacio usado= " calcularEspacioUsado().toString() + "MB\t" + "espacio disponible = " + (espacioUsado - (Usuario.get(session.user)).cuota).toString() + "MB")
     }
 
     def crearDirectorioUsuario(String path){

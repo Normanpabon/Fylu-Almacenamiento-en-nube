@@ -25,15 +25,15 @@
                 </a>
     
                 <div class="nav__list">
-                    <a href="#" class="nav__link active-link">
+                    <g:link class="nav__link" action="dirigirHome"><g:message args="[entityName]" />
                         <i class='bx bx-grid-alt'></i>
                         <span class="nav__name">Inicio</span>
-                    </a>
+                    </g:link>
     
-                    <a href="#" class="nav__link">
+                    <g:link class="nav__link" action="dirigirHome"><g:message args="[entityName]" />
                         <i class='bx bx-file'></i>
                         <span class="nav__name">Archivos</span>
-                    </a>
+                    </g:link>
     
                     <a href="#" class="nav__link">
                         <i class='bx bx-share-alt' ></i>
@@ -57,7 +57,7 @@
         <main class="container section">
             <h1>Mi perfil</h1>
             <!--=============== ALMACENAMIENTO USADO  ===============-->
-            <li><g:link class="create" controller="Archivo" action="calcularEspacioUsado"><g:message code="boton prueba espacio usado" args="[entityName]" /></g:link></li>
+            <li><g:link class="create" controller="Archivo" action="calcularEspacioDisponible"><g:message code="boton prueba espacio usado" args="[entityName]" /></g:link></li>
             <!--=============== FORMULARIO ===============-->
             <div class="form">
                 <asset:image src="perfil.svg" alt="Mi perfil" class="formimg"/>

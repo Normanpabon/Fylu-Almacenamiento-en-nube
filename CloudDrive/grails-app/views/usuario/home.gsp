@@ -25,15 +25,17 @@
                 </a>
     
                 <div class="nav__list">
-                    <a href="#" class="nav__link active-link">
+                    
+                    <g:link class="nav__link" action="dirigirHome"><g:message args="[entityName]" />
                         <i class='bx bx-grid-alt'></i>
                         <span class="nav__name">Inicio</span>
-                    </a>
+                    </g:link>
     
-                    <a href="#" class="nav__link">
+                    <g:link class="nav__link" action="dirigirHome"><g:message args="[entityName]" />
                         <i class='bx bx-file'></i>
                         <span class="nav__name">Archivos</span>
-                    </a>
+                    </g:link>
+    
     
                     <a href="#" class="nav__link">
                         <i class='bx bx-share-alt' ></i>
@@ -55,8 +57,15 @@
         </div>
         <!--=============== MAIN ===============-->
         <main class="container section">
-            <h1>Components</h1>
+            <h1>Mis archivos</h1>
             <h2>Aca deberia ir el menu con los archivos y eso</h2>
+
+            <!--- ciclo para mostrar los archivos -->
+            <g:each in="${params.myFileList}" var="file">
+             <li>${file.nombre}</li>
+            </g:each>
+
+            <!-- subida de archivos  -->
             <h3> Prueba subida archivos </h3>
             <br />
             <g:uploadForm controller="Archivo" action="subirArchivo">
