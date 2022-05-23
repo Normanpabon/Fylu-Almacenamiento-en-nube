@@ -80,7 +80,7 @@ class ArchivoController {
             response.outputStream << tmpFile.bytes
                 
         }else{
-            render "Error al descargar el archivo"
+            render "Error al descargar el archivo" + " \n DEBUG INFO : fileId= " + fileId + "\nPath : " + pathToData+(archivoService.get(fileId)).file_path
         }
     }
         
