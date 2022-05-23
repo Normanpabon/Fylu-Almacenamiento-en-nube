@@ -142,8 +142,8 @@ class ArchivoController {
             // transfiere el archivo a la ubicacion dada
             archivo.transferTo(new File(tmpPath))
 
-            render " se ha creado y transferido correctamente \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session
-
+            //render " se ha creado y transferido correctamente \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session
+            render "has encontrado un bug we"
             // todo : una vez finalizada la subida, recargar la vista
             
         }
@@ -161,10 +161,14 @@ class ArchivoController {
             try {
                 archivoService.save(tmpArchivo)
                 flash.message = "Archivo modificado correctamente"
+                redirect(controller: "usuario", action: "dirigirHome")
             } catch (ValidationException e) {
                 
             }
             
+        }else{
+            // aca podria entrar si el archivo existe en la carpeta pero no en la bd
+            redirect(controller: "usuario", action: "dirigirHome")
         }
     }
 
