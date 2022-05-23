@@ -101,10 +101,15 @@ class UsuarioController {
 
             }else{
 
-                render "algun error ha ocurrido, DEBUG : " + tmpUser
+                
+                flash.message = " Usuario o contraseña incorrectos"
+                redirect(action: "dirigirLogin")  
                 // mostrar usuario o contraseña incorrectos
             }
         }else{
+            
+            flash.message = " Usuario o contraseña incorrectos"
+            redirect(action: "dirigirLogin")  
             // mostrar usuario o contraseña incorrectos
         }
         
@@ -139,9 +144,18 @@ class UsuarioController {
         // se espera params.viejaContra y params.nuevaContra
         if(tmpUser != null){
             if(tmpUser.hashed_pass == params.viejaContra.digest('SHA-256')){
-                tmpUser.hashed_pass = params.nuevaContra.digest('SHA-256')
                 
-                usuarioService.save(tmpUser)
+                tmpUser.hashed_pass = params.nuevaContra.digest('SHA-256')
+
+                print("\nEBUG TmpUser data :" + tmpUser)
+                print("\nDEBUG viejaContra : " + params.viejaContra + "\t nuevaContra : " + params.nuevaContra)
+                try {
+                    usuarioService.save(tmpUser)
+                } catch (ValidationException e) {
+                    respond usuario.errors
+                    return
+                }
+                
                 flash.message = "Contraseña cambiada correctamente"
                 redirect(action: "dirigirPerfil")
 
@@ -158,6 +172,7 @@ class UsuarioController {
     }
     
     def modCorreo(){
+        
         verificarUsuarioLogueado()
         //logic
         def tmpUser = Usuario.get(session.user)
@@ -167,7 +182,12 @@ class UsuarioController {
         if(tmpUser != null){
             tmpUser.correo = params.correoNuevo
             
-            usuarioService.save(tmpUser)
+            try {
+                    usuarioService.save(tmpUser)
+                } catch (ValidationException e) {
+                    respond usuario.errors
+                    return
+                }
             flash.message = "Correo cambiado correctamente"
             redirect(action: "dirigirPerfil")
         
