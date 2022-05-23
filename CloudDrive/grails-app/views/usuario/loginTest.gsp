@@ -14,17 +14,17 @@
         <%-- ======= CSS ======= --%>
         <asset:stylesheet href="login.css"/>
     </head>
-   <body>
+    <body>
     <div class = "l-form" id="login">
         <div class="shape1"></div>
             <div class="shape2"></div>
             <div class="form">
-               <asset:image src="authentication.svg" alt="Inicia sesion" class="form__img"/>
+                <asset:image src="authentication.svg" alt="Inicia sesion" class="form__img"/>
                 <form class="form__content" action="loguearUsuario" method="POST" id="loginForm" autocomplete="off">
                     <h1 class="form__title">Inicia sesión</h1>
                     <div class= "form__description">
                         <p>No tienes una cuenta? <a href="/usuario/dirigirRegistro">Registrate</a></p>
-                     </div>
+                    </div>
                     <div class="form__div form__div-one">
                         <div class="form__icon">
                             <i class='bx bx-user-circle'></i>
@@ -53,6 +53,6 @@
             </div>
     </div>
     <asset:javascript src="login.js"/>
-   </body>
+    </body>
 </html>
 
