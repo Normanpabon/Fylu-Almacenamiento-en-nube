@@ -8,6 +8,7 @@
            
            
            <div>
+           <li><g:link class="create" controller="Archivo" action="calcularEspacioUsado"><g:message code="boton prueba espacio usado" args="[entityName]" /></g:link></li>
            	<h3>Mis datos actuales</h3>
            	<h4>Aca mostrar los datos del usuario actual</h4>
            	<h4>Nombre Usuario</h4>

@@ -5,12 +5,13 @@ class Archivo {
     int id
     Usuario uid_usr
     String nombre
-    int size
+    Long size
     String file_path
     
 
     static constraints = {
         id(unique:true)
+        
     }
 
     static mapping = {

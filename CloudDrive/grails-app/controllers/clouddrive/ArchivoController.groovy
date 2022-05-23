@@ -31,6 +31,27 @@ class ArchivoController {
 
     }
 
+     def listarArchivos(){
+
+        def fileList = Archivo.findAllByUid_usr(Usuario.get(session.user))
+        return fileList
+        
+        
+    }
+
+    def calcularEspacioUsado(){
+
+        def fileList = Archivo.findAllByUid_usr(Usuario.get(session.user))
+        def acum = 0
+
+        for(int i =0; i < fileList.size(); i++){
+            acum += fileList[i].size
+        }
+        
+        return acum
+        
+    }
+
     def crearDirectorioUsuario(String path){
 
         def file = new File(path)
@@ -39,17 +60,29 @@ class ArchivoController {
     }
 
     def descargarArchivo(){
+
+        def é
         // logica
     }
-        // anadir logica de sobrecarga para descargar multiples archivos
-        /*
+        
+    // anadir logica de sobrecarga para descargar multiples archivos
+    /*
     def descargarArchivo(){
 
     }
     */
 
     def eliminarArchivo(){
-        //logica
+        def tmpArchivo = archivoService.get(session.idDelArchivo)
+
+        try{
+            tmpArchivo.delete(flush:true)
+            // todo probar borrar archivo del disco tambien
+            new File(pathToData+tmpArchivo.file_path).delete()
+
+        }catch(org.springframework.dao.DataIntegrityViolationException e){
+
+        }
     }
 
 
@@ -77,7 +110,15 @@ class ArchivoController {
         }else{
             
             // llamar a accion de crear archivo (dejar registro en la bd)
-            crearArchivo("\\data\\"+tmpUser+tmpFileName, tmpFileName)
+
+            //verificar si el archivo ya existe, si existe sobrescribir y editar registro en la bd
+            if(existeArchivo(tmpPath)){
+                print("terminar")
+                modArchivo(tmpFileName, ((archivo.getSize()*0.000001).round(3)))
+            }else{
+                crearArchivo("\\data\\"+tmpUser+tmpFileName, tmpFileName, ((archivo.getSize()*0.000001).round(3)))
+            }
+            
             
             // transfiere el archivo a la ubicacion dada
             archivo.transferTo(new File(tmpPath))
@@ -91,10 +132,27 @@ class ArchivoController {
         
     }
 
-    def crearArchivo(tPath, nombre){
+    def modArchivo(nombre, fSize){
+        def tmpArchivo = Archivo.findByNombre(nombre)
+
+        if(tmpArchivo != null){
+            // actualiza el tamaño del archivo
+            tmpArchivo.size = fSize
+
+            try {
+                archivoService.save(tmpArchivo)
+                flash.message = "Archivo modificado correctamente"
+            } catch (ValidationException e) {
+                
+            }
+            
+        }
+    }
+
+    def crearArchivo(tPath, nombre, fSize){
         // todo calcular tamaño de archivo o ver como pasarlo por parametro
 
-        def tmpArchivo = new Archivo(uid_usr:Usuario.get(session.user), size:0, file_path:tPath, nombre:nombre)
+        def tmpArchivo = new Archivo(uid_usr:Usuario.get(session.user), size:fSize, file_path:tPath, nombre:nombre)
         // todo: verificar que el archivo no exista
         if(true){
             try{
@@ -112,10 +170,5 @@ class ArchivoController {
 
     }
 
-    def listarArchivos(){
-
-        // todo : listar los archivos del usuario actual
-        
-        
-    }
+   
 }

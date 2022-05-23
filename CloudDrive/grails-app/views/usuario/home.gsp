@@ -8,7 +8,7 @@
     <br />
     <g:uploadForm controller="Archivo" action="subirArchivo">
         <input type="file" name="myFile" />
-        <input type="Subir archivo" />
+        <input type="submit" name="Subir archivo" />
     </g:uploadForm>
 
     <div>
