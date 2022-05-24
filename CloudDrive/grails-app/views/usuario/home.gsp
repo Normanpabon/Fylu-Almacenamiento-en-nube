@@ -58,11 +58,11 @@
         <!--=============== MAIN ===============-->
         <main class="container section">
             <h1>Mis archivos</h1>
-            <h2>Aca deberia ir el menu con los archivos y eso</h2>
+            
 
             <!--- ciclo para mostrar los archivos -->
             <g:each in="${params.myFileList}" var="file">
-             <li>${file.nombre}   ${file.size}MB</li>
+             <li>${file.nombre}   ${file.size}MB <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" ><g:message code="Descargar" /></g:link>&nbsp;&nbsp;<g:link class="create" controller="archivo" action="eliminarArchivo" params="[fileToDelete: file.id]" ><g:message code="Eliminar" /></g:link></</li>
             </g:each>
 
             <!-- subida de archivos  -->
@@ -70,7 +70,7 @@
             <br />
             <g:uploadForm controller="Archivo" action="subirArchivo">
                 <input type="file" name="myFile" />
-                <input type="submit" name="Subir archivo" />
+                <input type="submit" value="Subir archivo" />
             </g:uploadForm>           
         </main>
         <!--=============== HOME JS ===============-->

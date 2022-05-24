@@ -92,14 +92,18 @@ class ArchivoController {
     */
 
     def eliminarArchivo(){
-        def tmpArchivo = archivoService.get(session.idDelArchivo)
+        def fileId = params.fileToDelete
+        def tmpArchivo = archivoService.get(fileId)
 
         try{
-            tmpArchivo.delete(flush:true)
+            archivoService.delete(fileId)
             // todo probar borrar archivo del disco tambien
             new File(pathToData+tmpArchivo.file_path).delete()
+            redirect(controller: "usuario", action: "dirigirHome")
 
         }catch(org.springframework.dao.DataIntegrityViolationException e){
+            flash.message ="Error al borrar el archivo"
+            redirect(controller: "usuario", action: "dirigirHome")
 
         }
     }
