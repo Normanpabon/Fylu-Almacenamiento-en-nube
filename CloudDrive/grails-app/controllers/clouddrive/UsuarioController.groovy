@@ -137,6 +137,13 @@ class UsuarioController {
         render(view:"perfil")
     }
 
+    def dirigirArchivosCompartidos(){
+        verificarUsuarioLogueado()
+        archivoController.listarArchivosCompartidosMe()
+        render(view:"compartido")
+    
+    }
+
     def verificarUsuarioLogueado(){
 
         def tmpUser = Usuario.get(session.user)
@@ -245,37 +252,6 @@ class UsuarioController {
         def tmpUser = usuarioService.get(session.user)
 
         // aca seria tener una vista de perfil y pasarle de parametro el id del usuario a renderizar los datos o el obj temporal "tmpUser"
-    }
-
-
-    // metodos generados por grails (una vez finalizado lo demas, debemos limpiar)
-
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond usuarioService.list(params), model:[usuarioCount: usuarioService.count()]
-        
-    }
-  
-    def save(Usuario usuario) {
-        if (usuario == null) {
-            notFound()
-            return
-        }
-
-        try {
-            usuarioService.save(usuario)
-        } catch (ValidationException e) {
-            respond usuario.errors, view:'create'
-            return
-        }
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuario.id])
-                redirect usuario
-            }
-            '*' { respond usuario, [status: CREATED] }
-        }
     }
 
     

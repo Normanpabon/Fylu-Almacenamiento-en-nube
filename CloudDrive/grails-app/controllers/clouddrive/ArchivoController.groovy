@@ -10,9 +10,68 @@ class ArchivoController {
 
     ArchivoService archivoService
     UsuarioService usuarioService
+    PermisoService permisoService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    // Manejo de permisos (de archivos)
+
+    def otorgarPermiso(){
+        // espera params con key archivoACompartir
+        // nota se deberia validar que el usuario sea el propietario
+        def tmpSharedUser = Usuario.findByNombre_usuario(params.usuarioACompartir)
+        
+        def tmpPermiso = new Permiso(file_id: params.archivoACompartir, tipo:"R", tmpSharedUser)
+
+        // todo : llamar a metodo para verificar existencia previa de este permiso (cuando se termine)
+        try{
+            permisoService.save(tmpPermiso)
+            redirect(controller: "usuario", action: "dirigirHome")
+        }catch (ValidationException e){
+            redirect(controller: "usuario", action: "dirigirHome")
+        }
+
+        
+        // logic usuario A da permiso a usuario B sobre archivo C
+
+    }
+
+    def listarArchivosCompartidosMe(){
+        // logic buscar todos los archivos compartidos con este usuario
+
+        // devuelve lista con todos los permisos para el usuario actual
+        def accessList = Permiso.findAllByUid_permitido(Usuario.get(session.user))
+        ArrayList<Archivo> sharedFiles = new ArrayList()
+        // recorrer la lista anterior buscando uno a uno los archivos
+        if(accessList != null){
+            for(int i=0; i < accessList.size(); i++){
+                sharedFiles.add(archivoService.get(accessList[i].file_id))
+            }
+            // asigna a params con key mySharedFiles la lista creada
+            params.mySharedFiles = sharedFiles
+
+        }
+         
+
+    }
+
+    def listarArchivosCompartidos(){
+        // logic buscar todos los archivos compartidos por este usuario
+    }
+
+    def existePermiso(fileId, sharedUser){
+
+        //def usrSharedList = p
+        //logic Verificar si el permiso sobre ese archivo ya existe
+    }
+
+    def eliminarPermiso(){
+
+        //logic Excelente pregunta 
+    }
+
+
+    // Manejo de archivos
 
     // se puede usar tambien para verificar si existe el directorio
     boolean existeArchivo(String path){

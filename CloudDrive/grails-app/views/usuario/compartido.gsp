@@ -59,21 +59,17 @@
         </div>
         <!--=============== MAIN ===============-->
         <main class="container section">
-            <h1>Mis archivos</h1>
+            <h1>Archivos compartidos conmigo</h1>
             
 
             <!--- ciclo para mostrar los archivos -->
-            <g:each in="${params.myFileList}" var="file">
-             <li>${file.nombre}   ${file.size}MB <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" ><g:message code="Descargar" /></g:link>&nbsp;&nbsp;<g:link class="create" controller="archivo" action="eliminarArchivo" params="[fileToDelete: file.id]" ><g:message code="Eliminar" /></g:link></</li>
+            <!-- Nota editar el borrar para que permita es eliminar el permiso, no el archivo-->
+            <h3>BORRAR /// Falta implementar permisos backend</h3>
+            <g:each in="${params.mySharedFiles}" var="file">
+             <li>${file.nombre}   ${file.size}MB <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" ><g:message code="Descargar" /></g:link>&nbsp;&nbsp;<g:link class="create" controller="archivo" action="eliminarPermiso" params="[fileToDelete: file.id]" ><g:message code="Eliminar" /></g:link></</li>
             </g:each>
 
-            <!-- subida de archivos  -->
-            <h3> Prueba subida archivos </h3>
-            <br />
-            <g:uploadForm controller="Archivo" action="subirArchivo">
-                <input type="file" name="myFile" />
-                <input type="submit" value="Subir archivo" />
-            </g:uploadForm>           
+           
         </main>
         <!--=============== HOME JS ===============-->
         <asset:javascript src="home.js"/>

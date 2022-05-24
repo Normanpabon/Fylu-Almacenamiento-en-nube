@@ -35,20 +35,22 @@
                         <span class="nav__name">Archivos</span>
                     </g:link>
     
-                    <a href="#" class="nav__link">
+                    <g:link class="nav__link" action="dirigirArchivosCompartidos"><g:message args="[entityName]" />
                         <i class='bx bx-share-alt' ></i>
-                        <span class="nav__name">Compartidos</span>
-                    </a>
-    
-                    <g:link class="nav__link" action="cerrarSesion"><g:message args="[entityName]" />
-                        <i class='bx bx-log-out'></i>
-                        <span class="nav__name">Salir</span>
+                        <span class="nav__name">Compartidos conmigo</span>
                     </g:link>
 
                     <g:link class="nav__link" action="dirigirPerfil"><g:message args="[entityName]" />
                         <i class='bx bx-cog' ></i>
                         <span class="nav__name">Ajustes</span>
                     </g:link>
+    
+                    <g:link class="nav__link" action="cerrarSesion"><g:message args="[entityName]" />
+                        <i class='bx bx-log-out'></i>
+                        <span class="nav__name">Salir</span>
+                    </g:link>
+
+                    
 
                 </div>
             </nav>
