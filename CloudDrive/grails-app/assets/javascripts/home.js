@@ -61,3 +61,68 @@ window.addEventListener("click", function(e){
         },500)
     }
 })
+/*=============== MODAL ELIMINAR ARCHIVO ===============*/
+$(".table").on("click", "#btnEliminar", function () {
+    var fileId = $(this).attr("fileId");
+    Swal.fire({
+        title: '¿Está seguro de borrar el archivo?',
+        text: "¡Se borrara de forma permanente!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, borralo!',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                'Eliminado!',
+                'Su archivo ha sido eliminado.',
+                'success'
+            )
+
+            window.location =
+            "../archivo/eliminarArchivo?fileToDelete="+fileId;
+            
+        }
+    })
+});
+
+$(".table").on("click", "#btnCompartir", function () {
+    var fileId = $(this).attr("fileId");
+    Swal.fire({
+        title: 'Digita el nombre de usuario',
+        text: "usuario con quien desea compartir el archivo",
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Compartir',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        // Buscar usuario TODO
+        preConfirm: (login) => {
+            return fetch(`//api.github.com/users/${login}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText)
+                }
+                return response.json()
+            })
+            .catch(error => {
+                Swal.showValidationMessage(
+                `Request failed: ${error}`
+                )
+            })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: `${result.value.login}'s avatar`,
+                imageUrl: result.value.avatar_url
+            })
+            }
+        })
+    });

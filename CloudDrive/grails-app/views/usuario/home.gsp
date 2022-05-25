@@ -15,7 +15,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/1.4.4/css/scroller.dataTables.min.css">
         
         <%-- ======= JS PLUGINS ======= --%>
-        <%-- <assets:javascript src="jquery.min.js"/> --%>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/scroller/1.4.4/js/dataTables.scroller.min.js"></script>
@@ -115,20 +115,26 @@
                     </tr>
                 </thead>                
                 
-                    <g:each in="${params.myFileList}" var="file">
+                    <g:each var="file" in="${params.myFileList}">
                     <tr>
                         <td>${file.nombre}</td> 
                         <td>${file.size}MB</td>
                         <td>
-                            <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" >
-                                <i class='bx bx-cloud-download' ></i>
-                            </g:link>&nbsp;&nbsp;
-                            <g:link class="create" controller="archivo" action="eliminarArchivo" params="[fileToDelete: file.id]" >
-                                <i class='bx bx-trash' ></i>
-                            </g:link>&nbsp;&nbsp;
-                            <g:link class="create" controller="archivo" action="compartirArchivo" params="[fileToShare: file.id]" >
-                                <i class='bx bx-share-alt' ></i>
-                            </g:link></td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                                    <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" >
+                                        <i class='bx bx-cloud-download' ></i>
+                                    </g:link>&nbsp;&nbsp;
+                                </button>                            
+                                <button type="button" class="btn btn-light modalEliminar" data-toggle="modal" id="btnEliminar" fileId = ${file.id}>
+                                    <i class='bx bx-trash' ></i>
+                                </button>
+                                <button type="button" class="btn btn-light modalCompartir" data-toggle="modal" id="btnCompartir" fileId = ${file.id}>
+                                    <i class='bx bx-share-alt' ></i>
+                                </button>                               
+                            </div>
+
+                        </td>
                     </tr>
                     </g:each>                   
             </table>      

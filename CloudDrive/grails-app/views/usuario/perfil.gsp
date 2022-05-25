@@ -62,11 +62,20 @@
             <%-- <li><g:link class="create" controller="Archivo" action="calcularEspacioDisponible"><g:message code="boton prueba espacio usado" args="[entityName]" /></g:link></li> --%>
             <!--=============== FORMULARIO ===============-->
             <div class="card mb-4">
-                <div class="card-header">Vista general de la cuenta</div>
+                <div class="card-header">Editar detalles de la cuenta</div>
                 <div class="card-body">
                     <div class="form">
                         <form class="formcontent" action="modificarContra" method="POST" id="edPassForm" autocomplete="off">
                             <h1 class="form__title">Cambiar la contraseña</h1>
+                                <div id="msg"></div>
+                                <!-- Mensajes de Verificación -->
+                                <div id="error" class="alert alert-danger ocultar" role="alert">
+                                    Las Contraseñas no coinciden, vuelve a intentar !
+                                </div>
+                                <div id="ok" class="alert alert-success ocultar" role="alert">
+                                    Las Contraseñas coinciden ! (Contraseña cambiada con exito)
+                                <!-- Fin Mensajes de Verificación -->
+                                </div>
                                 <div class="form__div">
                                     <label for="" class="formlabel">Contraseña actual</label>
                                     <input type="password" name="viejaContra" class="form-control" id="viejaContra" required>
@@ -75,7 +84,6 @@
                             <div class="form__div">
                                 <div class="formicon">
                                 </div>
-
                                 <div class="form__div">
                                     <label for="" class="formlabel">Nueva Contraseña</label>
                                     <input type="password" name="nuevaContra" class="form-control" id="nuevaContra" required>
@@ -91,8 +99,6 @@
                             <input type="submit" id="submit1" class="btn btn-primary" value="Cambiar clave" />
                         </form>
                     </div>
-                    
-                    <h2>/...../</h2>
                     <div class="form">
                         <form class="formcontent" action="modCorreo" method="POST" id="edMailForm" autocomplete="off">
                             <h3 class="form__title">Modifica tu correo</h3>
@@ -120,8 +126,6 @@
                             <input type="submit" id="submit" class="btn btn-primary" value="Cambiar correo" />
                         </form>
                     </div>
-                    
-                    <h2>/...../</h2>
                     <div class="form">
 
                         <form class="formcontent" action="deshabilitarCuenta" method="POST" id="edMailForm" autocomplete="off">

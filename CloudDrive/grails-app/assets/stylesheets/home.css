@@ -258,3 +258,9 @@ li{
   bottom: 5px !important;
   right: 5px !important;
 }
+
+.btn-group, .btn-group-vertical {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}

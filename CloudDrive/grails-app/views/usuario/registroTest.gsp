@@ -57,7 +57,7 @@
                             </div>
                         </div>
 
-                       <div class="form__div">
+                        <div class="form__div">
                             <div class="form__icon">
                                 <i class='bx bx-lock' ></i>
                             </div>
@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-                       <div class="form__div">
+                        <div class="form__div">
                             <div class="form__icon">
                                 <i class='bx bx-lock' ></i>
                             </div>

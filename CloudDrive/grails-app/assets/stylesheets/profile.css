@@ -216,3 +216,11 @@ a {
 .form__div{
   margin-block-end: 24px;
 }
+
+.ocultar {
+  display: none;
+}
+
+.mostrar {
+  display: block;
+}
