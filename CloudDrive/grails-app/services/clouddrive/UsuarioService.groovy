@@ -12,7 +12,7 @@ interface UsuarioService {
     Long count()
 
     void delete(Serializable id)
-
+    
     Usuario save(Usuario usuario)
 
 }
