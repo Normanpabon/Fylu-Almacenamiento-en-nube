@@ -97,7 +97,7 @@
                             <h2>Arrastra y suelta imagenes<h2>
                             <span>proximamente..<span>
                             <g:uploadForm controller="Archivo" action="subirArchivo">
-                                <input type="file" name="myFile" class="form-control-file" id="input-file"/>
+                                <input type="file" name="myFile" class="form-control-file" id="input-file" required=""/>
                                 <input type="submit" value="Añadir archivos" class="btn btn-primary" id="subir-archivo"/>
                             </g:uploadForm>
                         </div>
@@ -121,19 +121,21 @@
                         <td>${file.size}MB</td>
                         <td>
                             <div class="btn-group">
+                                %{--btn descargar archivo--}%
                                 <button type="button" class="btn btn-light">
                                     <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" >
                                         <i class='bx bx-cloud-download' ></i>
                                     </g:link>&nbsp;&nbsp;
-                                </button>                            
+                                </button>
+                                %{--btn Eliminar archivo--}%
                                 <button type="button" class="btn btn-light modalEliminar" data-toggle="modal" id="btnEliminar" fileId = ${file.id}>
                                     <i class='bx bx-trash' ></i>
                                 </button>
+                                %{-- btn Compartir archivo--}%
                                 <button type="button" class="btn btn-light modalCompartir" data-toggle="modal" id="btnCompartir" fileId = ${file.id}>
                                     <i class='bx bx-share-alt' ></i>
-                                </button>                               
+                                </button>
                             </div>
-
                         </td>
                     </tr>
                     </g:each>                   

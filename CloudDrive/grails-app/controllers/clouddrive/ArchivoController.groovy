@@ -20,16 +20,25 @@ class ArchivoController {
         // espera params con key archivoACompartir
         // nota se deberia validar que el usuario sea el propietario
         def tmpSharedUser = Usuario.findByNombre_usuario(params.usuarioACompartir)
-        
-        def tmpPermiso = new Permiso(file_id: params.archivoACompartir, tipo:"R", tmpSharedUser)
 
-        // todo : llamar a metodo para verificar existencia previa de este permiso (cuando se termine)
-        try{
-            permisoService.save(tmpPermiso)
-            redirect(controller: "usuario", action: "dirigirHome")
-        }catch (ValidationException e){
+        // todo : el tipo es provicional, se espera implementar permisos de lectura y lectura/escritura (R, RW)
+        print("\n\nDebug info : Archivo a compartir " + params.archivoACompartir + " usuario :" + tmpSharedUser)
+        def tmpPermiso = new Permiso(file_id: Archivo.get(params.archivoACompartir), tipo:"RW", uid_permitido: tmpSharedUser)
+
+
+        // verifica si el permiso existe
+        if(!existePermiso(params.archivoACompartir, tmpSharedUser)){
+            try{
+                permisoService.save(tmpPermiso)
+                redirect(controller: "usuario", action: "dirigirHome")
+            }catch (ValidationException e){
+                redirect(controller: "usuario", action: "dirigirHome")
+            }
+        }else{
+            flash.message = "El permiso ya existe"
             redirect(controller: "usuario", action: "dirigirHome")
         }
+
 
         
         // logic usuario A da permiso a usuario B sobre archivo C
@@ -37,6 +46,7 @@ class ArchivoController {
     }
 
     def listarArchivosCompartidosMe(){
+        existeDataFolder()
         // logic buscar todos los archivos compartidos con este usuario
 
         // devuelve lista con todos los permisos para el usuario actual
@@ -56,17 +66,36 @@ class ArchivoController {
 
     def listarArchivosCompartidos(){
         // logic buscar todos los archivos compartidos por este usuario
+
     }
 
     def existePermiso(fileId, sharedUser){
 
-        //def usrSharedList = p
-        //logic Verificar si el permiso sobre ese archivo ya existe
+        def accessList = Permiso.findAllByFile_id(Archivo.get(fileId))
+        def tmpUser = sharedUser
+
+        // recorremos todos los permisos de ese archivo (es feo pero funciona)
+        for(int i = 0; i < accessList.size(); i++){
+                if(accessList[i].uid_permitido == tmpUser ){
+                    return true
+                }else{
+                    return false
+                }
+        }
+        return false
+
     }
 
     def eliminarPermiso(){
 
         //logic Excelente pregunta 
+    }
+
+
+    def existeDataFolder(){
+        if(!existeArchivo(pathToData+"\\data\\")){
+            crearDirectorioUsuario(pathToData+"\\data\\")
+        }
     }
 
 
@@ -86,7 +115,7 @@ class ArchivoController {
     }
 
     def listarArchivos(){
-
+        existeDataFolder()
         def fileList = Archivo.findAllByUid_usr(Usuario.get(session.user))
 
         if(fileList != null){
@@ -154,7 +183,7 @@ class ArchivoController {
 
         try{
             archivoService.delete(fileId)
-            // todo probar borrar archivo del disco tambien
+
             new File(pathToData+tmpArchivo.file_path).delete()
             redirect(controller: "usuario", action: "dirigirHome")
 
@@ -171,7 +200,7 @@ class ArchivoController {
         def archivo = request.getFile('myFile')
 
         String tmpUser = (Usuario.get(session.user)).nombre_usuario + "\\"
-        // todo: corregir por nombre original del archivo
+
         String tmpFileName = archivo.getOriginalFilename()
         String tmpPath = pathToData+"\\data\\"+tmpUser
 
@@ -183,9 +212,10 @@ class ArchivoController {
         tmpPath += tmpFileName
 
         if(archivo.empty){
-            render "Error el archivo esta vacio \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session
+            redirect(controller: "usuario", action: "dirigirHome")
+            //render "Error el archivo esta vacio \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session
 
-            //todo : aca manejar el error mostrando una ventana emergente o algo
+
 
         }else{
             
@@ -204,8 +234,11 @@ class ArchivoController {
             archivo.transferTo(new File(tmpPath))
 
             //render " se ha creado y transferido correctamente \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session
-            render "has encontrado tu primer bug we"
-            // todo : una vez finalizada la subida, recargar la vista
+            //redirect(controller: "usuario", action: "dirigirHome")
+            // todo : solucionar el error, cuando se intenta subir un archivo duplicado
+            render "has encontrado tu primer bug we, el error es de grails "
+            //render(view:"Usuario/home")
+
             
         }
 
@@ -230,10 +263,10 @@ class ArchivoController {
     }
 
     def crearArchivo(tPath, nombre, fSize){
-        // todo calcular tamaño de archivo o ver como pasarlo por parametro
+
 
         def tmpArchivo = new Archivo(uid_usr:Usuario.get(session.user), size:fSize, file_path:tPath, nombre:nombre)
-        // todo: verificar que el archivo no exista
+        // todo: quitar condicional, la verificacion de que el archivo existe se hace antes de este llamado
         if(true){
             try{
                 archivoService.save(tmpArchivo)
