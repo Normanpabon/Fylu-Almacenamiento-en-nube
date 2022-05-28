@@ -21,8 +21,14 @@ class ArchivoController {
         // nota se deberia validar que el usuario sea el propietario
         def tmpSharedUser = Usuario.findByNombre_usuario(params.usuarioACompartir)
 
+        if(tmpSharedUser == null){
+            flash.message = "El usuario no existe"
+            redirect(controller: "usuario", action: "dirigirHome")
+
+        }
+
         // todo : el tipo es provicional, se espera implementar permisos de lectura y lectura/escritura (R, RW)
-        print("\n\nDebug info : Archivo a compartir " + params.archivoACompartir + " usuario :" + tmpSharedUser)
+        //print("\n\nDebug info : Archivo a compartir " + params.archivoACompartir + " usuario :" + tmpSharedUser)
         def tmpPermiso = new Permiso(file_id: Archivo.get(params.archivoACompartir), tipo:"RW", uid_permitido: tmpSharedUser)
 
 
@@ -53,12 +59,23 @@ class ArchivoController {
         def accessList = Permiso.findAllByUid_permitido(Usuario.get(session.user))
         ArrayList<Archivo> sharedFiles = new ArrayList()
         // recorrer la lista anterior buscando uno a uno los archivos
-        if(accessList != null){
+        print("\n\nDEBUG: accessList size : " + accessList.size()+"   OBJ = "+ accessList.getClass() +"\n\n")
+        
+        if(accessList.size()>0 && accessList != null){
             for(int i=0; i < accessList.size(); i++){
-                sharedFiles.add(archivoService.get(accessList[i].file_id))
+                def tmpPerm = accessList.get(i)
+                print("\n\nDEBUG= file id = "+ tmpPerm.file_id+"   OBJ class = "+ tmpPerm.getClass() +"\n\n")
+                print("tmpPerm file-uid id : " + tmpPerm.file_id.id)
+                
+                // accessList.get(i) --> permiso
+                sharedFiles.add(Archivo.get(tmpPerm.file_id.id))
+
             }
             // asigna a params con key mySharedFiles la lista creada
             params.mySharedFiles = sharedFiles
+
+            print("\nDEBUG: mySharedFiles size:" + sharedFiles.size()+ "  content : " + sharedFiles+"\n")
+
 
         }
 
@@ -87,8 +104,10 @@ class ArchivoController {
     }
 
     def eliminarPermiso(){
+        // TODO: Implementar logica
+        redirect(controller: "usuario", action: "dirigirArchivosCompartidos")
 
-        //logic Excelente pregunta 
+        
     }
 
 
