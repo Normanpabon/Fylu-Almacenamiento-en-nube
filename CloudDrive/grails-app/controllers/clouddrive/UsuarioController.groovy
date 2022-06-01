@@ -7,6 +7,7 @@ class UsuarioController {
 
     UsuarioService usuarioService
     ArchivoController archivoController = new ArchivoController()
+    LogController logController = new LogController(true)
     
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -25,6 +26,7 @@ class UsuarioController {
             if(tmpUser.hashed_pass == (params.claveOld+tmpUser.nombre_usuario).digest('SHA-256') ){
                 tmpUser.activo = 0
                 try{
+                    logController.loguearAdvertencia("Baja", tmpUser.nombre_usuario, "Deshabilitacion de la cuenta")
                     usuarioService.save(tmpUser)
                     flash.message = "Cuenta desactivada correctamente"
                     redirect(action: "dirigirLogin")
@@ -32,7 +34,7 @@ class UsuarioController {
                     
                 }
             }else{
-                
+                logController.loguearAdvertencia("Baja", tmpUser.nombre_usuario, "Intento fallido deshabilitacion de la cuenta")
                 flash.message = "La clave es incorrecta"
                 redirect(action: "dirigirPerfil")
             }
@@ -62,6 +64,7 @@ class UsuarioController {
             try{
                 usuarioService.save(tmpUser)
                 // muestra msg temporal
+                logController.loguearInformacion("Register", params.usuario, "Registro exitoso de usuario")
                 flash.message = 'Usuario' + params.usuario +'creado correctamente!' 
                 redirect(action: "dirigirLogin")
 
@@ -74,6 +77,7 @@ class UsuarioController {
             }
         }else{
             flash.error = ' ERROR el usuario ' + params.usuario +' ya esta registrado!'
+            logController.loguearInformacion("Register", params.usuario, "Registro fallido, usuario ya existente")
             redirect(action: "dirigirRegistro") 
         }
 
@@ -102,10 +106,12 @@ class UsuarioController {
                     return
                 }
                 
+                logController.loguearAdvertencia("Cambio_clave", tmpUser.nombre_usuario, "Clave actualizada correctamente")
                 flash.message = "Contraseña cambiada correctamente"
                 redirect(action: "dirigirPerfil")
 
             }else{
+                logController.loguearAdvertencia("Cambio_clave", tmpUser.nombre_usuario, "Intento actualizacion clave fallida")
                 flash.message = "La contraseña anterior es incorrecta"
                 redirect(action: "dirigirPerfil")
 
@@ -178,6 +184,8 @@ class UsuarioController {
                 //logueo exitoso
                 setUsuarioActual(tmpUser.getId())
 
+                logController.loguearInformacion("Login", tmpUser.nombre_usuario, "Usuario logueado correctamente")
+
                 //render "Usuario encontrado, logueado correctamente. DEBUG params: " + params + "\nDEBUG SESSION: " + session
 
                 redirect(action: "dirigirHome") 
@@ -186,13 +194,14 @@ class UsuarioController {
 
             }else{
 
-                
+                logController.loguearInformacion("Login", tmpUser.nombre_usuario, "Intento fallido de acceso")
                 flash.message = " Usuario o contraseña incorrectos"
                 redirect(action: "dirigirLogin")  
                 // mostrar usuario o contraseña incorrectos
             }
         }else{
             
+            logController.loguearInformacion("Login", null, "Intento fallido de acceso cuenta no registrada, datos probados usuario : " + params.usuario + " clave: " + params.hashed_pass)
             flash.message = " Usuario o contraseña incorrectos"
             redirect(action: "dirigirLogin")  
             // mostrar usuario o contraseña incorrectos
@@ -238,6 +247,7 @@ class UsuarioController {
                     respond usuario.errors
                     return
                 }
+            logController.loguearAdvertencia("Cambio_correo", tmpUser.nombre_usuario, "Correo actualizado correctamente" )
             flash.message = "Correo cambiado correctamente"
             redirect(action: "dirigirPerfil")
         

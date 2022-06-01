@@ -11,6 +11,7 @@ class ArchivoController {
     ArchivoService archivoService
     UsuarioService usuarioService
     PermisoService permisoService
+    LogController logController = new LogController(true)
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -35,6 +36,8 @@ class ArchivoController {
         // verifica si el permiso existe
         if(!existePermiso(params.archivoACompartir, tmpSharedUser)){
             try{
+                // TODO: implementar registro de usuario que creo el permiso
+                logController.loguearInformacion("Share", (Usuario.get(session.user)).getNombre_usuario(), "Archivo compartido. id archivo : " + params.archivoACompartir + " compartido a : " + tmpSharedUser)
                 permisoService.save(tmpPermiso)
                 redirect(controller: "usuario", action: "dirigirHome")
             }catch (ValidationException e){
@@ -48,6 +51,22 @@ class ArchivoController {
 
         
         // logic usuario A da permiso a usuario B sobre archivo C
+
+    }
+
+    def recolectorBasura(def fileId){
+        def permisosArchivo = Permiso.findAllByFile_id(Archivo.get(fileId))
+        if(permisosArchivo.size()>0){
+            for(int i = 0; i < permisosArchivo.size(); i++){
+                def tempPerm = permisosArchivo.get(i)
+                try {
+                    tempPerm.delete()
+                }catch(Exception e){
+
+                }
+            }
+        }
+        // elimina los permisos asignados al archivo para evitar errores
 
     }
 
@@ -105,6 +124,7 @@ class ArchivoController {
 
     def eliminarPermiso(){
         // TODO: Implementar logica
+        logController.loguearAdvertencia("Share", (Usuario.get(session.user)).getNombre_usuario(), "Se ha borrado el permiso correctamente de ....")
         redirect(controller: "usuario", action: "dirigirArchivosCompartidos")
 
         
@@ -152,6 +172,8 @@ class ArchivoController {
         for(int i =0; i < fileList.size(); i++){
             acum += fileList[i].size
         }
+
+        logController.loguearInformacion("Quota", (Usuario.get(session.user)).getNombre_usuario(), "Espacio usado por el usuario : " + acum + "MB" )
         
         return acum
         
@@ -162,7 +184,7 @@ class ArchivoController {
 
         def espacioUsado = calcularEspacioUsado()
         
-        return espacioUsado - (Usuario.get(session.user)).cuota
+        return espacioUsado - (Usuario.get(session.user)).getCuota()
 
         //render ("espacio usado= " calcularEspacioUsado().toString() + "MB\t" + "espacio disponible = " + (espacioUsado - (Usuario.get(session.user)).cuota).toString() + "MB")
     }
@@ -170,6 +192,9 @@ class ArchivoController {
     def crearDirectorioUsuario(String path){
 
         def file = new File(path)
+
+        logController.loguearInformacion("Create", Usuario.get(session.user).nombre_usuario, "Creacion auto directorio : " + path)
+
         file.mkdir()
 
     }
@@ -180,9 +205,13 @@ class ArchivoController {
         def tmpFile = new File(pathToData+(archivoService.get(fileId)).file_path)
         if(tmpFile.exists()){
             //falta probar, en espera de la vista
+
+
             response.setContentType("application/octet-stream")
             response.setHeader("Content-disposition", "attachment;filename=\"${tmpFile.name}\"")
             response.outputStream << tmpFile.bytes
+
+            logController.loguearInformacion("Download", (Usuario.get(session.user)).getNombre_usuario(), "Descarga de archivo id: " + params.fileToDownloadId)
                 
         }else{
             render "Error al descargar el archivo" + " \n DEBUG INFO : fileId= " + fileId + "\nPath : " + pathToData+(archivoService.get(fileId)).file_path
@@ -201,17 +230,23 @@ class ArchivoController {
         def tmpArchivo = archivoService.get(fileId)
 
         try{
+            recolectorBasura(fileId)
             archivoService.delete(fileId)
 
             new File(pathToData+tmpArchivo.file_path).delete()
+            logController.loguearInformacion("Delete", Usuario.get(session.user).nombre_usuario, "Eliminacion exitosa de archivo. " + tmpArchivo.file_path )
             redirect(controller: "usuario", action: "dirigirHome")
 
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             flash.message ="Error al borrar el archivo"
+            logController.loguearInformacion("Delete", Usuario.get(session.user).nombre_usuario, "Eliminacion fallida" + tmpArchivo.file_path )
+
             redirect(controller: "usuario", action: "dirigirHome")
 
         }
     }
+
+
 
 
 
@@ -242,10 +277,12 @@ class ArchivoController {
 
             //verificar si el archivo ya existe, si existe sobrescribir y editar registro en la bd
             if(existeArchivo(tmpPath)){
-                print("terminar")
+                
                 modArchivo(tmpFileName, ((archivo.getSize()*0.000001).round(3)))
+                logController.loguearAdvertencia("Sobrescritura", Usuario.get(session.user).nombre_usuario, "Se sobrescribe el archivo " + tmpFileName)
             }else{
                 crearArchivo("\\data\\"+tmpUser+tmpFileName, tmpFileName, ((archivo.getSize()*0.000001).round(3)))
+                logController.loguearInformacion("Upload", Usuario.get(session.user).nombre_usuario, "Creacion exitosa archivo " + tmpFileName )
             }
             
             
@@ -275,7 +312,8 @@ class ArchivoController {
                 archivoService.save(tmpArchivo)
                 flash.message = "Archivo modificado correctamente"
             } catch (ValidationException e) {
-                
+
+                logController.loguearError("Validacion", null, "Error al modificar el archivo " + nombre + " en la base de datos")
             }
             
         }
@@ -293,6 +331,7 @@ class ArchivoController {
                 flash.message = 'Archivo creado correctamente '
                 redirect(controller: "usuario", action: "dirigirHome")
             }catch(ValidationException e){
+                logController.loguearError("Validacion", null, "Error al registrar el archivo " + nombre + " en la base de datos")
                 render "Error al subir el archivo \nDEBUG params : "+ params + " \n DEBUG request: " + request + " \n DEBUG session: " + session + " \n DEBUG path: " + tPath + "\n\n TmpArchivoData: " +tmpArchivo
             }
         

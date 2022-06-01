@@ -15,6 +15,8 @@ class UrlMappings {
 
         // quickFix
         "/"(controller:"Usuario", action:"dirigirLogin")
+        "/admin"(controller:"Administrador", action:"dirigirLoginAdmin")
+        "/loguearAdmin"(controller:"Administrador", action:"dirigirPanel")
         "500"(view:'/error')
         "404"(view:'/notFound')
     }
