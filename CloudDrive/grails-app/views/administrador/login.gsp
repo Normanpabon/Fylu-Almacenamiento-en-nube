@@ -27,7 +27,7 @@
 
                         <div class="formdiv-input">
                             <label for="" class="formlabel">Usuario</label>
-                            <input type="text" name="viejaContra" class="forminput" id="adminUser" required>
+                            <input type="text" name="adminUser" class="forminput" id="adminUser" required>
                         </div>
                     </div>
                      <div class="formdiv">
@@ -37,7 +37,7 @@
 
                         <div class="formdiv-input">
 							<label for="" class="formlabel">Clave</label>
-                            <input type="password" name="nuevaContra" class="forminput" id="adminPass" required>
+                            <input type="password" name="adminPass" class="forminput" id="adminPass" required>
                         </div>
                     </div>
                     
