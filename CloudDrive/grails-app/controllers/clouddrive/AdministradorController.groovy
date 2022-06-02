@@ -89,7 +89,9 @@ class AdministradorController {
     // crea un admin en caso de que no exista ninguno registrado
     def defaultAdmin(){
         // todo : terminar logica para que no se cree si hay otro usuario tambien
-        if(administradorService.get(0) == null){
+        def adminList = Administrador.findAll()
+
+        if(adminList.size() == 0){
             String tmpAdName = "cloudAdmin"
             String tmpPass = generarClave(8)
             print("\nAdministrador no encontrado, creando uno nuevo.\n Usuario: cloudAdmin\n clave acceso: "+tmpPass)
