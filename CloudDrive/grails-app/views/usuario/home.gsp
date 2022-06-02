@@ -10,22 +10,21 @@
         <asset:stylesheet href="boxicons.min.css"/>
         <%-- ======= CSS ======= --%>
         <asset:stylesheet href="bootstrap.min.css"/>
+        <asset:stylesheet href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap.min.css"/>
         <asset:stylesheet href="home.css"/>
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/1.4.4/css/scroller.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
         
         <%-- ======= JS PLUGINS ======= --%>
+        <%-- Jquery --%>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <%-- SweetAlert2 --%>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/scroller/1.4.4/js/dataTables.scroller.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js "></script>
+        <%-- DataTables --%>
+        <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap.min.js"></script>
+        
     </head>
     <body>
         <!--=============== NAV ===============-->
@@ -67,80 +66,99 @@
                         <i class='bx bx-log-out'></i>
                         <span class="nav__name">Salir</span>
                     </g:link>
-
-                    
-
                 </div>
             </nav>
         </div>
+
+        <!--=============== NAVBAR2 ===============-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <%-- aqui iria a mostrar el nombre de usuario --%>
+                <a class="navbar-brand" href="#">Usuario</a>
+            </div>
+        </nav>
+
         <!--=============== MAIN ===============-->
-        <main class="container section">
-            <h1>Mis archivos</h1>
-            
-        <!-- Boton ventana modal para subir archivos   -->
-        <button type="button" class="btn btn-primary modalTrigger" data-toggle="modal">
-            <i class='bx bx-cloud-upload'></i>
-            <span>Subir archivo</span>
-        </button>
-        <!-- Boton ventana modal para crear carpeta   -->
-        <button type="button" class="btn btn-light modalTrigger" data-bs-toggle="dropdown">
-            <i class='bx bx-plus' ></i>
-            <span>Crear</span>
-        </button>
-            <!--=============== MODAL ===============-->
-            <!-- subida de archivos  -->
-            <div class="modal-container">
-                <div class="modal modal-close">
-                    <p class="close">X</p>
-                    <div class="mb-3">
-                        <div class="drag-area">
-                            <h2>Arrastra y suelta imagenes<h2>
-                            <span>proximamente..<span>
-                            <g:uploadForm controller="Archivo" action="subirArchivo">
-                                <input type="file" name="myFile" class="form-control-file" id="input-file" required=""/>
-                                <input type="submit" value="Añadir archivos" class="btn btn-primary" id="subir-archivo"/>
-                            </g:uploadForm>
+        <div class="main__ui">
+            <main class="container section ">
+                <h1>Mis archivos</h1>
+                
+            <!-- Boton ventana modal para subir archivos   -->
+            <button type="button" class="btn btn-primary modalTrigger" data-toggle="modal">
+                <i class='bx bx-cloud-upload'></i>
+                <span>Subir archivo</span>
+            </button>
+            <!-- Boton ventana modal para crear carpeta   -->
+            <button type="button" class="btn btn-light modalTrigger" data-bs-toggle="dropdown">
+                <i class='bx bx-plus' ></i>
+                <span>Crear</span>
+            </button>
+                <!--=============== MODAL ===============-->
+                <!-- subida de archivos  -->
+                <div class="modal-container">
+                    <div class="modal modal-close">
+                        <p class="close">X</p>
+                        <div class="mb-3">
+                            <div class="drop-area">
+                                <h2>Arrastra y suelta imagenes<h2>
+                                <span>O</span>
+                                <button>Selecciona tus archivos</button>
+                                <g:uploadForm controller="Archivo" action="subirArchivo">
+                                    <input type="file" name="myFile" class="form-control-file" id="input-file" required="" hidden multiple/>
+                                    <input type="submit" value="Añadir archivos" class="btn btn-primary" id="subir-archivo"/>
+                                </g:uploadForm>
+                            </div>
+                            <div id="preview"></div>
+
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--=============== LISTADO DE ARCHIVOS  ===============-->
-            <!--- ciclo para mostrar los archivos -->
-            <table id="archivos__dt" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Tamaño</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>                
-                
-                    <g:each var="file" in="${params.myFileList}">
-                    <tr>
-                        <td>${file.nombre}</td> 
-                        <td>${file.size}MB</td>
-                        <td>
-                            <div class="btn-group">
-                                %{--btn descargar archivo--}%
-                                <button type="button" class="btn btn-light">
-                                    <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" >
-                                        <i class='bx bx-cloud-download' ></i>
-                                    </g:link>&nbsp;&nbsp;
-                                </button>
-                                %{--btn Eliminar archivo--}%
-                                <button type="button" class="btn btn-light modalEliminar" data-toggle="modal" id="btnEliminar" fileId = ${file.id}>
-                                    <i class='bx bx-trash' ></i>
-                                </button>
-                                %{-- btn Compartir archivo--}%
-                                <button type="button" class="btn btn-light modalCompartir" data-toggle="modal" id="btnCompartir" fileId = ${file.id}>
-                                    <i class='bx bx-share-alt' ></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    </g:each>                   
-            </table>      
-        </main>
+                <!--=============== LISTADO DE ARCHIVOS  ===============-->
+                <!--- ciclo para mostrar los archivos -->
+                <table id="archivos__dt" class="table table-striped table-bordered responsive nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tamaño</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>                
+                    
+                        <g:each var="file" in="${params.myFileList}">
+                        <tr>
+                            <td>
+                                <div class="flex mr1">
+                                    <span class="file">
+                                        <div title="${file.nombre}">
+                                            ${file.nombre}
+                                        </div>
+                                    </span>
+                                </div>
+                            </td> 
+                            <td>${file.size}MB</td>
+                            <td>
+                                <div class="btn-group">
+                                    %{--btn descargar archivo--}%
+                                    <button type="button" class="btn btn-light">
+                                        <g:link class="create" controller="archivo" action="descargarArchivo" params="[fileToDownloadId: file.id]" >
+                                            <i class='bx bx-cloud-download' ></i>
+                                        </g:link>
+                                    </button>
+                                    %{--btn Eliminar archivo--}%
+                                    <button type="button" class="btn btn-light modalEliminar" data-toggle="modal" id="btnEliminar" fileId = ${file.id}>
+                                        <i class='bx bx-trash' ></i>
+                                    </button>
+                                    %{-- btn Compartir archivo--}%
+                                    <button type="button" class="btn btn-light modalCompartir" data-toggle="modal" id="btnCompartir" fileId = ${file.id}>
+                                        <i class='bx bx-share-alt' ></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </g:each>                   
+                </table>      
+            </main>
+        </div>
         <!--=============== HOME JS ===============-->
         <asset:javascript src="home.js"/>
     </body>

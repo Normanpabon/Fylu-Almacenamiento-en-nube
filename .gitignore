@@ -1,3 +1,33 @@
+.idea/
+.vs/
 
+CloudDrive/grails-app/bin
 CloudDrive/grails-app/conf/application.yml
 CloudDrive/grails-app/data/dir_to_ignore/
+
+# default HSQL database files
+/prodDb.*
+/devDb.*
+
+# general HSQL database files
+*Db.properties
+*Db.script
+
+# logs
+/stacktrace.log
+/test/reports
+/logs
+
+### Eclipse template
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath

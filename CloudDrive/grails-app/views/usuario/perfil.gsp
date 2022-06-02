@@ -50,9 +50,6 @@
                         <i class='bx bx-log-out'></i>
                         <span class="nav__name">Salir</span>
                     </g:link>
-
-                    
-
                 </div>
             </nav>
         </div>

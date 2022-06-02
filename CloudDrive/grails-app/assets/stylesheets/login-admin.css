@@ -1,0 +1,61 @@
+/*===== GOOGLE FONTS =====*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/*===== VARIABLES CSS =====*/
+
+/*=== Colores ===*/
+:root{
+    --first-color: #364a63;
+    --text-color: #8590AD;
+}
+
+/*=== Fuente y tipografia ===*/
+:root{
+    --body-font: 'Poppins', sans-serif;
+    --big-font-size: 2rem;
+    --normal-font-size: 0.938rem;
+    --smaller-font-size: 0.875rem;
+}
+@media screen and (min-width: 768px){
+    :root{
+        --big-font-size: 2.5rem;
+        --normal-font-size: 1rem;
+    }  
+}
+
+/*===== BASE =====*/
+*,::before,::after{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    padding: 0;
+    font-family: var(--body-font);
+    color: var(--first-color);
+    background: #ada996; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #969fad, #f2f2f2, #dbdbdb, #eaeaea); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #969fad, #f2f2f2, #dbdbdb, #eaeaea); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+h1{
+    margin: 0;
+}
+a{
+    text-decoration: none;
+}
+img{
+    max-width: 100%;
+    height: auto;
+}
+
+
+.bg{
+    background-image: url(login-admin.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.brand__logo {
+    font-weight: 600;
+    font-size: 1.3rem;
+    }
